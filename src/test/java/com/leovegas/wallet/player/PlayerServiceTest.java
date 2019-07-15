@@ -4,14 +4,15 @@ import com.leovegas.wallet.entity.Player;
 import com.leovegas.wallet.entity.Status;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,30 +76,27 @@ public class PlayerServiceTest {
         Assert.assertEquals(foundedPlayerDTO.getName(), "name1");
     }
 
-    @Ignore
     @Test
     public void findAll() {
         PlayerDTO playerDTO = generatePlayerDTO();
-        PlayerDTO playerDTO1 = playerService.addPlayer(playerDTO);
-        List<PlayerDTO> all = playerService.findAll();
-        Assert.assertTrue(all.size() > 0);
+        Player player = generatePlayer();
+        given(modelMapper.map(playerDTO, Player.class)).willReturn(player);
+        given(modelMapper.map(Arrays.asList(player), new TypeToken<List<PlayerDTO>>() {
+        }.getType())).willReturn(Arrays.asList(playerDTO));
+        given(playerRepository.findAll()).willReturn(Arrays.asList(player));
+        List<PlayerDTO> foundedPlayers = playerService.findAll();
+        Assert.assertTrue(foundedPlayers.size() > 0);
     }
 
-    @Ignore
-    @Test
-    public void removeById() {
-        PlayerDTO playerDTO = generatePlayerDTO();
-        PlayerDTO playerDTO1 = playerService.addPlayer(playerDTO);
-        playerService.removeById(playerDTO1.getId());
-        Assert.assertNull(playerService.findById(playerDTO1.getId()));
-    }
-
-    @Ignore
     @Test
     public void findPlayerById() {
+        long playerId = 14L;
         PlayerDTO playerDTO = generatePlayerDTO();
-        PlayerDTO playerDTO1 = playerService.addPlayer(playerDTO);
-        Optional<Player> playerById = playerService.findPlayerById(playerDTO1.getId());
-        Assert.assertTrue(playerById.isPresent());
+        Player player = generatePlayer();
+        given(modelMapper.map(playerDTO, Player.class)).willReturn(player);
+        given(modelMapper.map(player, PlayerDTO.class)).willReturn(playerDTO);
+        given(playerRepository.findById(Mockito.eq(playerId))).willReturn(Optional.of(player));
+        Optional<Player> foundedPlayerDTO = playerService.findPlayerById(playerId);
+        Assert.assertEquals(player, foundedPlayerDTO.get());
     }
 }
