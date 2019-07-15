@@ -57,8 +57,9 @@ public class PlayerServiceTest {
         given(modelMapper.map(playerDTO, Player.class)).willReturn(player);
         given(modelMapper.map(player, PlayerDTO.class)).willReturn(playerDTO);
         given(playerRepository.save(Mockito.any(Player.class))).will(invocation -> invocation.getArgument(0));
-        PlayerDTO playerDTO1 = playerService.addPlayer(playerDTO);
-        Assert.assertEquals(playerDTO1.getStatus(), Status.ENABLE);
+        PlayerDTO savedPlayer = playerService.addPlayer(playerDTO);
+        Assert.assertEquals(playerDTO, savedPlayer);
+        Assert.assertEquals(savedPlayer.getStatus(), Status.ENABLE);
     }
 
     @Ignore
