@@ -62,16 +62,19 @@ public class PlayerServiceTest {
         Assert.assertEquals(savedPlayer.getStatus(), Status.ENABLE);
     }
 
-    @Ignore
     @Test
     public void findById() {
+        long playerId = 14L;
         PlayerDTO playerDTO = generatePlayerDTO();
-        PlayerDTO playerDTO1 = playerService.addPlayer(playerDTO);
-        PlayerDTO byId = playerService.findById(playerDTO1.getId());
-        Assert.assertEquals(byId.getName(), "name1");
+        Player player = generatePlayer();
+        given(modelMapper.map(playerDTO, Player.class)).willReturn(player);
+        given(modelMapper.map(player, PlayerDTO.class)).willReturn(playerDTO);
+        given(playerRepository.findById(Mockito.eq(playerId))).willReturn(Optional.of(player));
+        PlayerDTO foundedPlayerDTO = playerService.findById(playerId);
+        Assert.assertEquals(playerDTO, foundedPlayerDTO);
+        Assert.assertEquals(foundedPlayerDTO.getName(), "name1");
     }
 
-    @Ignore
     @Test
     public void findAll() {
         PlayerDTO playerDTO = generatePlayerDTO();
