@@ -75,6 +75,7 @@ public class PlayerServiceTest {
         Assert.assertEquals(foundedPlayerDTO.getName(), "name1");
     }
 
+    @Ignore
     @Test
     public void findAll() {
         PlayerDTO playerDTO = generatePlayerDTO();
