@@ -10,7 +10,6 @@ import com.leovegas.wallet.player.PlayerBaseDTO;
 import com.leovegas.wallet.player.PlayerService;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -18,6 +17,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -161,31 +162,17 @@ public class FinancialTransactionServiceTest {
         }
     }
 
-    @Ignore
     @Test
     public void findAllPaged() {
-        FinancialTransactionDTO financialTransactionDTO = new FinancialTransactionDTO();
-        financialTransactionDTO.setTransactionAmount(10L);
-        financialTransactionDTO.setTransactionId(1L);
-//        financialTransactionDTO.setAccount(accountBaseDTO);
-//        financialTransactionDTO.setPlayer(playerBaseDTO);
-        FinancialTransactionDTO financialTransactionDTO1 = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
+        FinancialTransactionDTO financialTransactionDTO = generateFinancialTransactionDTO();
+        FinancialTransaction financialTransaction = generateFinancialTransaction();
+        given(modelMapper.map(financialTransactionDTO, FinancialTransaction.class)).willReturn(financialTransaction);
+        Page<FinancialTransaction> pagedResponse = new PageImpl(Arrays.asList(financialTransaction));
+        given(modelMapper.map(pagedResponse, new TypeToken<Page<FinancialTransactionDTO>>() {
+        }.getType())).willReturn(pagedResponse);
+        given(financialTransactionRepository.findAll(Mockito.any(Pageable.class))).willReturn(pagedResponse);
         Pageable pageable = PageRequest.of(0, 1);
-        List<FinancialTransactionDTO> content = financialTransactionService.findAllPaged(pageable).getContent();
-        Assert.assertTrue(content.size() > 0);
-    }
-
-    @Ignore
-    @Test
-    public void removeById() {
-        FinancialTransactionDTO financialTransactionDTO = new FinancialTransactionDTO();
-        financialTransactionDTO.setTransactionAmount(10L);
-        financialTransactionDTO.setTransactionId(1L);
-//        financialTransactionDTO.setAccount(accountBaseDTO);
-//        financialTransactionDTO.setPlayer(playerBaseDTO);
-        FinancialTransactionDTO financialTransactionDTO1 = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
-        financialTransactionService.removeById(financialTransactionDTO1.getId());
-        FinancialTransactionDTO byId = financialTransactionService.findById(financialTransactionDTO1.getId());
-        Assert.assertNull(byId);
+        List<FinancialTransactionDTO> financialTransactionDTOS = financialTransactionService.findAllPaged(pageable).getContent();
+        Assert.assertTrue(financialTransactionDTOS.size() > 0);
     }
 }
