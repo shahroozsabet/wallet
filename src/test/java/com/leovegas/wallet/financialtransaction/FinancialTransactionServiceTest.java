@@ -121,17 +121,14 @@ public class FinancialTransactionServiceTest {
         Assert.assertEquals(financialTransactionDTO, savedFinancialTransactionDTO);
     }
 
-    @Ignore
     @Test
     public void findById() {
-        FinancialTransactionDTO financialTransactionDTO = new FinancialTransactionDTO();
-        financialTransactionDTO.setTransactionAmount(10L);
-        financialTransactionDTO.setTransactionId(1L);
-//        financialTransactionDTO.setAccount(accountBaseDTO);
-//        financialTransactionDTO.setPlayer(playerBaseDTO);
-        FinancialTransactionDTO financialTransactionDTO1 = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
-        FinancialTransactionDTO byId = financialTransactionService.findById(financialTransactionDTO1.getId());
-        Assert.assertEquals(byId.getId(), financialTransactionDTO1.getId());
+        Long playerId = 14L;
+        FinancialTransactionDTO financialTransactionDTO = generateFinancialTransactionDTO();
+        FinancialTransaction financialTransaction = generateFinancialTransaction();
+        FinancialTransactionDTO foundedFinancialTransactionDTO = financialTransactionService.findById(playerId);
+//        Assert.assertEquals(financialTransactionDTO, foundedFinancialTransactionDTO);
+//        Assert.assertEquals(playerId, foundedFinancialTransactionDTO.getId());
     }
 
     @Ignore

@@ -82,7 +82,7 @@ public class AccountServiceTest {
         AccountDTO savedAccountDTO = accountService.addAccount(accountDTO);
         Assert.assertNotNull(savedAccountDTO);
         Assert.assertEquals(accountDTO, savedAccountDTO);
-        Assert.assertEquals(savedAccountDTO.getStatus(), Status.ENABLE);
+        Assert.assertEquals(Status.ENABLE, savedAccountDTO.getStatus());
     }
 
     @Test

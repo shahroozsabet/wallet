@@ -73,7 +73,7 @@ public class PlayerServiceTest {
         given(playerRepository.findById(Mockito.eq(playerId))).willReturn(Optional.of(player));
         PlayerDTO foundedPlayerDTO = playerService.findById(playerId);
         Assert.assertEquals(playerDTO, foundedPlayerDTO);
-        Assert.assertEquals(foundedPlayerDTO.getName(), "name1");
+        Assert.assertEquals("name1", foundedPlayerDTO.getName());
     }
 
     @Test
