@@ -1,13 +1,11 @@
 # Wallet Application
-Please consider 4 fixes and 2 optimizations and 2 assumptions:
+Please consider 3 fixes and 2 optimizations and 2 assumptions:
 
 1- All Controller can have Pageable findAll methods, like FinancialTransactionController class.  
 
 2- Validation should be check again more thoroughly.
-
-3- Mockito could be used in order to test each wallet layer separately. 
-
-4- Security should be added to be production ready.
+ 
+3- Security should be added to be production ready.
 
 Optimizations:
 
