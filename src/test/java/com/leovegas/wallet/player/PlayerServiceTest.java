@@ -12,7 +12,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,9 +81,9 @@ public class PlayerServiceTest {
         PlayerDTO playerDTO = generatePlayerDTO();
         Player player = generatePlayer();
         given(modelMapper.map(playerDTO, Player.class)).willReturn(player);
-        given(modelMapper.map(Arrays.asList(player), new TypeToken<List<PlayerDTO>>() {
-        }.getType())).willReturn(Arrays.asList(playerDTO));
-        given(playerRepository.findAll()).willReturn(Arrays.asList(player));
+        given(modelMapper.map(Collections.singletonList(player), new TypeToken<List<PlayerDTO>>() {
+        }.getType())).willReturn(Collections.singletonList(playerDTO));
+        given(playerRepository.findAll()).willReturn(Collections.singletonList(player));
         List<PlayerDTO> foundedPlayers = playerService.findAll();
         Assert.assertTrue(foundedPlayers.size() > 0);
     }

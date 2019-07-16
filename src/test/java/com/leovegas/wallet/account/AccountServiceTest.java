@@ -15,7 +15,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,9 +103,9 @@ public class AccountServiceTest {
         AccountDTO accountDTO = generateAccountDTO();
         Account account = generateAccount();
         given(modelMapper.map(accountDTO, Account.class)).willReturn(account);
-        given(modelMapper.map(Arrays.asList(account), new TypeToken<List<AccountDTO>>() {
-        }.getType())).willReturn(Arrays.asList(accountDTO));
-        given(accountRepository.findAll()).willReturn(Arrays.asList(account));
+        given(modelMapper.map(Collections.singletonList(account), new TypeToken<List<AccountDTO>>() {
+        }.getType())).willReturn(Collections.singletonList(accountDTO));
+        given(accountRepository.findAll()).willReturn(Collections.singletonList(account));
         List<AccountDTO> foundedAccounts = accountService.findAll();
         Assert.assertTrue(foundedAccounts.size() > 0);
     }

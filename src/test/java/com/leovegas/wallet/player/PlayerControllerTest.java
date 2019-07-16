@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs(outputDir = "target/snippets")
 public class PlayerControllerTest {
 
-    private static List<PlayerDTO> playerDTOS = new ArrayList<>();
+    private static final List<PlayerDTO> playerDTOS = new ArrayList<>();
     @Autowired
     private MockMvc mockMvc;
     @InjectMocks

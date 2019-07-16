@@ -23,7 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -141,9 +141,9 @@ public class FinancialTransactionServiceTest {
         FinancialTransactionDTO financialTransactionDTO = generateFinancialTransactionDTO();
         FinancialTransaction financialTransaction = generateFinancialTransaction();
         given(modelMapper.map(financialTransactionDTO, FinancialTransaction.class)).willReturn(financialTransaction);
-        given(modelMapper.map(Arrays.asList(financialTransaction), new TypeToken<List<FinancialTransactionDTO>>() {
-        }.getType())).willReturn(Arrays.asList(financialTransactionDTO));
-        given(financialTransactionRepository.findAll()).willReturn(Arrays.asList(financialTransaction));
+        given(modelMapper.map(Collections.singletonList(financialTransaction), new TypeToken<List<FinancialTransactionDTO>>() {
+        }.getType())).willReturn(Collections.singletonList(financialTransactionDTO));
+        given(financialTransactionRepository.findAll()).willReturn(Collections.singletonList(financialTransaction));
         List<FinancialTransactionDTO> foundedFinancialTransactionDTOs = financialTransactionService.findAll();
         Assert.assertTrue(foundedFinancialTransactionDTOs.size() > 0);
     }
@@ -154,9 +154,9 @@ public class FinancialTransactionServiceTest {
         FinancialTransactionDTO financialTransactionDTO = generateFinancialTransactionDTO();
         FinancialTransaction financialTransaction = generateFinancialTransaction();
         given(modelMapper.map(financialTransactionDTO, FinancialTransaction.class)).willReturn(financialTransaction);
-        given(modelMapper.map(Arrays.asList(financialTransaction), new TypeToken<List<FinancialTransactionDTO>>() {
-        }.getType())).willReturn(Arrays.asList(financialTransactionDTO));
-        given(financialTransactionRepository.findByPlayerId(Mockito.eq(playerId))).willReturn(Arrays.asList(financialTransaction));
+        given(modelMapper.map(Collections.singletonList(financialTransaction), new TypeToken<List<FinancialTransactionDTO>>() {
+        }.getType())).willReturn(Collections.singletonList(financialTransactionDTO));
+        given(financialTransactionRepository.findByPlayerId(Mockito.eq(playerId))).willReturn(Collections.singletonList(financialTransaction));
         for (FinancialTransactionDTO transactionDTO : financialTransactionService.findByPlayerId(playerId)) {
             Assert.assertEquals(playerId, transactionDTO.getPlayer().getId());
         }
@@ -167,7 +167,7 @@ public class FinancialTransactionServiceTest {
         FinancialTransactionDTO financialTransactionDTO = generateFinancialTransactionDTO();
         FinancialTransaction financialTransaction = generateFinancialTransaction();
         given(modelMapper.map(financialTransactionDTO, FinancialTransaction.class)).willReturn(financialTransaction);
-        Page<FinancialTransaction> pagedResponse = new PageImpl(Arrays.asList(financialTransaction));
+        Page<FinancialTransaction> pagedResponse = new PageImpl<>(Collections.singletonList(financialTransaction));
         given(modelMapper.map(pagedResponse, new TypeToken<Page<FinancialTransactionDTO>>() {
         }.getType())).willReturn(pagedResponse);
         given(financialTransactionRepository.findAll(Mockito.any(Pageable.class))).willReturn(pagedResponse);
