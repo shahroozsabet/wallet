@@ -42,8 +42,8 @@ public class AccountServiceITTest {
         accountDTO.setPlayer(playerBaseDTO);
         accountDTO.setCurrentBalance(0D);
         accountDTO.setStatus(Status.ENABLE);
-        AccountDTO accountDTO1 = accountService.addAccount(accountDTO);
-        Assert.assertNotNull(accountDTO1);
+        AccountDTO savedDTO = accountService.addAccount(accountDTO);
+        Assert.assertNotNull(savedDTO);
     }
 
     @Test
@@ -52,9 +52,9 @@ public class AccountServiceITTest {
         accountDTO.setPlayer(playerBaseDTO);
         accountDTO.setCurrentBalance(0D);
         accountDTO.setStatus(Status.ENABLE);
-        AccountDTO accountDTO1 = accountService.addAccount(accountDTO);
-        AccountDTO byId = accountService.findById(accountDTO1.getId());
-        Assert.assertEquals(byId.getId(), accountDTO1.getId());
+        AccountDTO savedAccountDTO = accountService.addAccount(accountDTO);
+        AccountDTO foundedAccountDTO = accountService.findById(savedAccountDTO.getId());
+        Assert.assertEquals(savedAccountDTO.getId(), foundedAccountDTO.getId());
     }
 
     @Test
@@ -63,9 +63,9 @@ public class AccountServiceITTest {
         accountDTO.setPlayer(playerBaseDTO);
         accountDTO.setCurrentBalance(0D);
         accountDTO.setStatus(Status.ENABLE);
-        AccountDTO accountDTO1 = accountService.addAccount(accountDTO);
-        List<AccountDTO> all = accountService.findAll();
-        Assert.assertTrue(all.size() > 0);
+        AccountDTO savedAccountDTO = accountService.addAccount(accountDTO);
+        List<AccountDTO> foundedAccountDTOs = accountService.findAll();
+        Assert.assertTrue(foundedAccountDTOs.size() > 0);
     }
 
 }

@@ -59,9 +59,9 @@ public class FinancialTransactionServiceITTest {
         financialTransactionDTO.setTransactionId(1L);
         financialTransactionDTO.setAccount(accountBaseDTO);
         financialTransactionDTO.setPlayer(playerBaseDTO);
-        FinancialTransactionDTO financialTransactionDTO1 = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
-        Assert.assertNotNull(financialTransactionDTO1);
-        Assert.assertEquals(financialTransactionDTO1.getAccount().getCurrentBalance().longValue(), 10);
+        FinancialTransactionDTO savedFinancialTransactionDTO = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
+        Assert.assertNotNull(savedFinancialTransactionDTO);
+        Assert.assertEquals(10, savedFinancialTransactionDTO.getAccount().getCurrentBalance().longValue());
     }
 
     @Test
@@ -71,9 +71,9 @@ public class FinancialTransactionServiceITTest {
         financialTransactionDTO.setTransactionId(1L);
         financialTransactionDTO.setAccount(accountBaseDTO);
         financialTransactionDTO.setPlayer(playerBaseDTO);
-        FinancialTransactionDTO financialTransactionDTO1 = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
-        FinancialTransactionDTO byId = financialTransactionService.findById(financialTransactionDTO1.getId());
-        Assert.assertEquals(byId.getId(), financialTransactionDTO1.getId());
+        FinancialTransactionDTO savedFinancialTransactionDTO = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
+        FinancialTransactionDTO foundedFinancialTransactionDTO = financialTransactionService.findById(savedFinancialTransactionDTO.getId());
+        Assert.assertEquals(savedFinancialTransactionDTO.getId(), foundedFinancialTransactionDTO.getId());
     }
 
     @Test
@@ -83,9 +83,9 @@ public class FinancialTransactionServiceITTest {
         financialTransactionDTO.setTransactionId(1L);
         financialTransactionDTO.setAccount(accountBaseDTO);
         financialTransactionDTO.setPlayer(playerBaseDTO);
-        FinancialTransactionDTO financialTransactionDTO1 = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
-        List<FinancialTransactionDTO> all = financialTransactionService.findAll();
-        Assert.assertTrue(all.size() > 0);
+        FinancialTransactionDTO savedfinancialTransactionDTO = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
+        List<FinancialTransactionDTO> foundedFinancialTransactionDTOs = financialTransactionService.findAll();
+        Assert.assertTrue(foundedFinancialTransactionDTOs.size() > 0);
     }
 
     @Test
@@ -95,11 +95,10 @@ public class FinancialTransactionServiceITTest {
         financialTransactionDTO.setTransactionId(1L);
         financialTransactionDTO.setAccount(accountBaseDTO);
         financialTransactionDTO.setPlayer(playerBaseDTO);
-        FinancialTransactionDTO financialTransactionDTO1 = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
+        FinancialTransactionDTO savedfinancialTransactionDTO = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
         for (FinancialTransactionDTO transactionDTO : financialTransactionService.findByPlayerId(playerBaseDTO.getId())) {
-            Assert.assertEquals(transactionDTO.getPlayer().getId(), financialTransactionDTO1.getPlayer().getId());
+            Assert.assertEquals(savedfinancialTransactionDTO.getPlayer().getId(), transactionDTO.getPlayer().getId());
         }
-
     }
 
     @Test
@@ -109,10 +108,10 @@ public class FinancialTransactionServiceITTest {
         financialTransactionDTO.setTransactionId(1L);
         financialTransactionDTO.setAccount(accountBaseDTO);
         financialTransactionDTO.setPlayer(playerBaseDTO);
-        FinancialTransactionDTO financialTransactionDTO1 = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
+        FinancialTransactionDTO savedfinancialTransactionDTO = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
         Pageable pageable = PageRequest.of(0, 1);
-        List<FinancialTransactionDTO> content = financialTransactionService.findAllPaged(pageable).getContent();
-        Assert.assertTrue(content.size() > 0);
+        List<FinancialTransactionDTO> financialTransactionDTOS = financialTransactionService.findAllPaged(pageable).getContent();
+        Assert.assertTrue(financialTransactionDTOS.size() > 0);
     }
 
     @Test
@@ -122,9 +121,9 @@ public class FinancialTransactionServiceITTest {
         financialTransactionDTO.setTransactionId(1L);
         financialTransactionDTO.setAccount(accountBaseDTO);
         financialTransactionDTO.setPlayer(playerBaseDTO);
-        FinancialTransactionDTO financialTransactionDTO1 = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
-        financialTransactionService.removeById(financialTransactionDTO1.getId());
-        FinancialTransactionDTO byId = financialTransactionService.findById(financialTransactionDTO1.getId());
-        Assert.assertNull(byId);
+        FinancialTransactionDTO savedfinancialTransactionDTO = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
+        financialTransactionService.removeById(savedfinancialTransactionDTO.getId());
+        FinancialTransactionDTO foundedFinancialTransactionDTO = financialTransactionService.findById(savedfinancialTransactionDTO.getId());
+        Assert.assertNull(foundedFinancialTransactionDTO);
     }
 }

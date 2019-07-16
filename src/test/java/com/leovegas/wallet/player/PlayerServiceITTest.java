@@ -27,8 +27,8 @@ public class PlayerServiceITTest {
         PlayerDTO playerDTO = new PlayerDTO();
         playerDTO.setName("name1");
         playerDTO.setStatus(Status.ENABLE);
-        PlayerDTO playerDTO1 = playerService.addPlayer(playerDTO);
-        Assert.assertEquals(playerDTO1.getStatus(), Status.ENABLE);
+        PlayerDTO savedPlayerDTO = playerService.addPlayer(playerDTO);
+        Assert.assertEquals(Status.ENABLE, savedPlayerDTO.getStatus());
     }
 
     @Test
@@ -36,9 +36,9 @@ public class PlayerServiceITTest {
         PlayerDTO playerDTO = new PlayerDTO();
         playerDTO.setName("name1");
         playerDTO.setStatus(Status.ENABLE);
-        PlayerDTO playerDTO1 = playerService.addPlayer(playerDTO);
-        PlayerDTO byId = playerService.findById(playerDTO1.getId());
-        Assert.assertEquals(byId.getName(), "name1");
+        PlayerDTO savedPlayerDTO = playerService.addPlayer(playerDTO);
+        PlayerDTO foundedPlayerDTO = playerService.findById(savedPlayerDTO.getId());
+        Assert.assertEquals("name1", foundedPlayerDTO.getName());
     }
 
     @Test
@@ -46,9 +46,9 @@ public class PlayerServiceITTest {
         PlayerDTO playerDTO = new PlayerDTO();
         playerDTO.setName("name1");
         playerDTO.setStatus(Status.ENABLE);
-        PlayerDTO playerDTO1 = playerService.addPlayer(playerDTO);
-        List<PlayerDTO> all = playerService.findAll();
-        Assert.assertTrue(all.size() > 0);
+        PlayerDTO savedPlayerDTO = playerService.addPlayer(playerDTO);
+        List<PlayerDTO> foundedPlayerDTOs = playerService.findAll();
+        Assert.assertTrue(foundedPlayerDTOs.size() > 0);
     }
 
     @Test
@@ -56,9 +56,9 @@ public class PlayerServiceITTest {
         PlayerDTO playerDTO = new PlayerDTO();
         playerDTO.setName("name1");
         playerDTO.setStatus(Status.ENABLE);
-        PlayerDTO playerDTO1 = playerService.addPlayer(playerDTO);
-        playerService.removeById(playerDTO1.getId());
-        Assert.assertNull(playerService.findById(playerDTO1.getId()));
+        PlayerDTO savedPlayerDTO = playerService.addPlayer(playerDTO);
+        playerService.removeById(savedPlayerDTO.getId());
+        Assert.assertNull(playerService.findById(savedPlayerDTO.getId()));
     }
 
     @Test
@@ -66,8 +66,8 @@ public class PlayerServiceITTest {
         PlayerDTO playerDTO = new PlayerDTO();
         playerDTO.setName("name1");
         playerDTO.setStatus(Status.ENABLE);
-        PlayerDTO playerDTO1 = playerService.addPlayer(playerDTO);
-        Optional<Player> playerById = playerService.findPlayerById(playerDTO1.getId());
-        Assert.assertTrue(playerById.isPresent());
+        PlayerDTO savedPlayerDTO = playerService.addPlayer(playerDTO);
+        Optional<Player> foundedPlayerById = playerService.findPlayerById(savedPlayerDTO.getId());
+        Assert.assertTrue(foundedPlayerById.isPresent());
     }
 }

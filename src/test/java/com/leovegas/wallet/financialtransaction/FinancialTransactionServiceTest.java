@@ -15,12 +15,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -123,40 +125,40 @@ public class FinancialTransactionServiceTest {
 
     @Test
     public void findById() {
+        Long financialTransactionId = 14L;
+        FinancialTransactionDTO financialTransactionDTO = generateFinancialTransactionDTO();
+        FinancialTransaction financialTransaction = generateFinancialTransaction();
+        given(modelMapper.map(financialTransactionDTO, FinancialTransaction.class)).willReturn(financialTransaction);
+        given(modelMapper.map(financialTransaction, FinancialTransactionDTO.class)).willReturn(financialTransactionDTO);
+        given(financialTransactionRepository.findById(Mockito.eq(financialTransactionId))).willReturn(Optional.of(financialTransaction));
+        FinancialTransactionDTO foundedFinancialTransactionDTO = financialTransactionService.findById(financialTransactionId);
+        Assert.assertEquals(financialTransactionDTO, foundedFinancialTransactionDTO);
+    }
+
+    @Test
+    public void findAll() {
+        FinancialTransactionDTO financialTransactionDTO = generateFinancialTransactionDTO();
+        FinancialTransaction financialTransaction = generateFinancialTransaction();
+        given(modelMapper.map(financialTransactionDTO, FinancialTransaction.class)).willReturn(financialTransaction);
+        given(modelMapper.map(Arrays.asList(financialTransaction), new TypeToken<List<FinancialTransactionDTO>>() {
+        }.getType())).willReturn(Arrays.asList(financialTransactionDTO));
+        given(financialTransactionRepository.findAll()).willReturn(Arrays.asList(financialTransaction));
+        List<FinancialTransactionDTO> foundedFinancialTransactionDTOs = financialTransactionService.findAll();
+        Assert.assertTrue(foundedFinancialTransactionDTOs.size() > 0);
+    }
+
+    @Test
+    public void findByPlayerId() {
         Long playerId = 14L;
         FinancialTransactionDTO financialTransactionDTO = generateFinancialTransactionDTO();
         FinancialTransaction financialTransaction = generateFinancialTransaction();
-        FinancialTransactionDTO foundedFinancialTransactionDTO = financialTransactionService.findById(playerId);
-//        Assert.assertEquals(financialTransactionDTO, foundedFinancialTransactionDTO);
-//        Assert.assertEquals(playerId, foundedFinancialTransactionDTO.getId());
-    }
-
-    @Ignore
-    @Test
-    public void findAll() {
-        FinancialTransactionDTO financialTransactionDTO = new FinancialTransactionDTO();
-        financialTransactionDTO.setTransactionAmount(10L);
-        financialTransactionDTO.setTransactionId(1L);
-//        financialTransactionDTO.setAccount(accountBaseDTO);
-//        financialTransactionDTO.setPlayer(playerBaseDTO);
-        FinancialTransactionDTO financialTransactionDTO1 = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
-        List<FinancialTransactionDTO> all = financialTransactionService.findAll();
-        Assert.assertTrue(all.size() > 0);
-    }
-
-    @Ignore
-    @Test
-    public void findByPlayerId() {
-        FinancialTransactionDTO financialTransactionDTO = new FinancialTransactionDTO();
-        financialTransactionDTO.setTransactionAmount(10L);
-        financialTransactionDTO.setTransactionId(1L);
-//        financialTransactionDTO.setAccount(accountBaseDTO);
-//        financialTransactionDTO.setPlayer(playerBaseDTO);
-        FinancialTransactionDTO financialTransactionDTO1 = financialTransactionService.addFinancialTransaction(financialTransactionDTO);
-//        for (FinancialTransactionDTO transactionDTO : financialTransactionService.findByPlayerId(playerBaseDTO.getId())) {
-//            Assert.assertEquals(transactionDTO.getPlayer().getId(), financialTransactionDTO1.getPlayer().getId());
-//        }
-
+        given(modelMapper.map(financialTransactionDTO, FinancialTransaction.class)).willReturn(financialTransaction);
+        given(modelMapper.map(Arrays.asList(financialTransaction), new TypeToken<List<FinancialTransactionDTO>>() {
+        }.getType())).willReturn(Arrays.asList(financialTransactionDTO));
+        given(financialTransactionRepository.findByPlayerId(Mockito.eq(playerId))).willReturn(Arrays.asList(financialTransaction));
+        for (FinancialTransactionDTO transactionDTO : financialTransactionService.findByPlayerId(playerId)) {
+            Assert.assertEquals(playerId, transactionDTO.getPlayer().getId());
+        }
     }
 
     @Ignore
