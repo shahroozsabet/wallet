@@ -1,11 +1,14 @@
 # Wallet Application
-Please consider 3 fixes and 2 optimizations and 2 assumptions:
+Please consider 4 fixes and 2 optimizations and 2 assumptions:
 
 1- All Controller can have Pageable findAll methods, like FinancialTransactionController class.  
 
 2- Validation should be check again more thoroughly.
  
 3- Security should be added to be production ready.
+
+4- Wallet Service in k8s is added for testing via postman and web browser, when frontend is developed
+    this backend app will have just a cluster ip.
 
 Optimizations:
 

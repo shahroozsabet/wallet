@@ -1,0 +1,35 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: wallet-service
+spec:
+  selector:
+    app: wallet
+  ports:
+    - protocol: TCP
+      port: 8080
+      nodePort: 30001
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wallet-deployment
+  labels:
+    app: wallet
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: wallet
+  template:
+    metadata:
+      labels:
+        app: wallet
+    spec:
+      containers:
+        - name: wallet
+          image: leovegas/wallet:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
